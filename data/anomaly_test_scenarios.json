@@ -1,0 +1,34 @@
+[
+  {
+    "case_id": "ANOM-01",
+    "description": "Attempt to issue an expired blood unit",
+    "unit_id": "BB-2026-1004",
+    "attempted_action": "issueBloodUnit",
+    "rule_violated": "Unit expiryTimestamp < currentBlockTimestamp",
+    "expected_result": "REVERT: Unit has expired"
+  },
+  {
+    "case_id": "ANOM-02",
+    "description": "Attempt to transfer already completed unit",
+    "unit_id": "BB-2026-1012",
+    "attempted_action": "initiateTransfer",
+    "rule_violated": "Invalid state transition: COMPLETED -> IN_TRANSIT",
+    "expected_result": "REVERT: State machine violation"
+  },
+  {
+    "case_id": "ANOM-03",
+    "description": "Unauthorized wallet attempting laboratory approval",
+    "unit_id": "BB-2026-1025",
+    "attempted_action": "approveBloodUnit",
+    "rule_violated": "Caller does not possess LAB_ROLE",
+    "expected_result": "REVERT: AccessControlUnauthorizedAccount"
+  },
+  {
+    "case_id": "ANOM-04",
+    "description": "Document SHA-256 integrity mismatch",
+    "unit_id": "BB-2026-1033",
+    "attempted_action": "verifyDocumentHash",
+    "rule_violated": "Calculated SHA-256 hash does not match on-chain metadataHash",
+    "expected_result": "FLAGGED: Cryptographic integrity failure / document tampered"
+  }
+]

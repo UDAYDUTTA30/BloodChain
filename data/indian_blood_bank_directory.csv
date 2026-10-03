@@ -1,0 +1,11 @@
+bank_id,name,state,district,city,address,pincode,contact,email,category,component_facility,apheresis_facility,service_time,wallet_address
+BB-IND-DEL-001,AIIMS Main Blood Bank,Delhi,New Delhi,New Delhi,"Ansari Nagar East, Ring Road",110029,011-26588500,bloodbank@aiims.edu,Government,Yes,Yes,24/7,0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+BB-IND-DEL-002,Indian Red Cross Society National HQ Blood Bank,Delhi,Central Delhi,New Delhi,"1, Red Cross Road",110001,011-23716441,bloodbank@indianredcross.org,Red Cross,Yes,Yes,24/7,0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
+BB-IND-MAH-003,KEM Hospital Blood Bank,Maharashtra,Mumbai,Mumbai,"Acharya Donde Marg, Parel",400012,022-24107000,bloodbank@kem.edu,Government,Yes,Yes,24/7,0x90F79bf6EB2c4f870365E785982E1f101E93b906
+BB-IND-MAH-004,Tata Memorial Hospital Blood Bank,Maharashtra,Mumbai,Mumbai,"Dr. E Borges Road, Parel",400012,022-24177000,bloodbank@tmc.gov.in,Charitable Trust,Yes,Yes,24/7,0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65
+BB-IND-KAR-005,Victoria Hospital Blood Bank (BMCRI),Karnataka,Bengaluru Urban,Bengaluru,"Fort Road, near City Market",560002,080-26701150,bloodbank@bmcri.edu.in,Government,Yes,Yes,24/7,0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc
+BB-IND-KAR-006,Rashtrotthana Blood Centre,Karnataka,Bengaluru Urban,Bengaluru,"Kempegowda Nagar, Gavipuram Guttahalli",560019,080-26612730,bloodcentre@rashtrotthana.org,Charitable Trust,Yes,Yes,24/7,0x976EA74026E726554dB657fA54763abd0C3a0aa9
+BB-IND-TN-007,Rajiv Gandhi Government General Hospital Blood Bank,Tamil Nadu,Chennai,Chennai,"EVR Periyar Salai, Park Town",600003,044-25305000,bloodbank@rgggh.gov.in,Government,Yes,Yes,24/7,0x14dC79964da2C08b23698B3D3cc7Ca32193d9955
+BB-IND-WB-008,Calcutta Medical College & Hospital Blood Bank,West Bengal,Kolkata,Kolkata,"88, College Street",700073,033-22551620,bloodbank@medicalcollegekolkata.in,Government,Yes,Yes,24/7,0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f
+BB-IND-TG-009,Osmania General Hospital Blood Bank,Telangana,Hyderabad,Hyderabad,Afzal Gunj,500012,040-24600121,bloodbank@osmania.gov.in,Government,Yes,Yes,24/7,0xa0Ee7A142d267C1f36714E4a8F75612F20a79720
+BB-IND-UP-010,KGMU Blood Bank (Transfusion Medicine),Uttar Pradesh,Lucknow,Lucknow,"Shah Mina Road, Chowk",226003,0522-2257540,bloodbank@kgmcindia.edu,Government,Yes,Yes,24/7,0xBcd4042DE499D14e55001CcbB24a551F3b954096

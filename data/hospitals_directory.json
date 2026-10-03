@@ -1,0 +1,42 @@
+[
+  {
+    "hospital_id": "HOSP-DEL-01",
+    "name": "Safdarjung Hospital",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "contact": "011-26165060",
+    "wallet_address": "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+  },
+  {
+    "hospital_id": "HOSP-MAH-02",
+    "name": "Lilavati Hospital & Research Centre",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "contact": "022-26751000",
+    "wallet_address": "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
+  },
+  {
+    "hospital_id": "HOSP-KAR-03",
+    "name": "Manipal Hospital Old Airport Road",
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "contact": "080-25024444",
+    "wallet_address": "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+  },
+  {
+    "hospital_id": "HOSP-TN-04",
+    "name": "Apollo Hospitals Greams Road",
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "contact": "044-28290200",
+    "wallet_address": "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097"
+  },
+  {
+    "hospital_id": "HOSP-WB-05",
+    "name": "SSKM Hospital & IPGMER",
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "contact": "033-22231589",
+    "wallet_address": "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
+  }
+]
