@@ -173,7 +173,7 @@ def register_unit(req: UnitRegistrationRequest):
     col_date = datetime.strptime(req.collection_date, "%Y-%m-%d")
     exp_date = col_date + timedelta(days=req.shelf_life_days)
     
-    meta_payload = f"{req.blood_unit_id}|{req.blood_group}|{req.component_type}|{col_date.isoformat()}|{req.facility_name}"
+    meta_payload = f"{req.blood_unit_id}|{req.blood_group}|{req.component_type}|{req.collection_date}|{req.facility_name}"
     meta_hash = "0x" + hashlib.sha256(meta_payload.encode()).hexdigest()
 
     tx_hash = "0x" + hashlib.sha256(f"reg_{req.blood_unit_id}_{datetime.now().isoformat()}".encode()).hexdigest()

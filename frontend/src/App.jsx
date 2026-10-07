@@ -12,7 +12,7 @@ import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import ForecastDashboard from './pages/ForecastDashboard';
 import AnomalyAuditView from './pages/AnomalyAuditView';
 import DirectoryView from './pages/DirectoryView';
-import { SEPOLIA_CONFIG } from './contracts/contractConfig';
+import { SEPOLIA_CONFIG, CONTRACT_ADDRESS, BloodChainABI } from './contracts/contractConfig';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('passport');
@@ -78,30 +78,83 @@ export default function App() {
     }
   };
 
-  // State Transition Action Trigger
+  // State Transition Action Trigger (Hybrid: On-Chain + Backend Sync)
   const handleTriggerAction = async (unitId, actionName, params = {}) => {
+    if (!currentAccount) {
+      alert("Please connect your MetaMask wallet first.");
+      return;
+    }
+
     try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, BloodChainABI, signer);
+
+      let tx;
+      console.log(`Executing ${actionName} on-chain for ${unitId}...`);
+
+      switch (actionName) {
+        case 'submitForTesting':
+          tx = await contract.submitForTesting(unitId);
+          break;
+        case 'approveBloodUnit':
+          // Convert string to bytes32 or use a generic hash. We'll use a zero hash for simplicity if none provided.
+          const docHash = ethers.ZeroHash; 
+          tx = await contract.approveBloodUnit(unitId, docHash);
+          break;
+        case 'rejectBloodUnit':
+          tx = await contract.rejectBloodUnit(unitId, params.rejection_reason || 'Failed tests');
+          break;
+        case 'storeBloodUnit':
+          tx = await contract.storeBloodUnit(unitId);
+          break;
+        case 'initiateTransfer':
+          // Needs hospital address! We will use a mock or prompt if not provided.
+          const toHospital = params.to_hospital || '0x2808d69BBcaAd5Dc56161632a8F78d22A73f7dfb'; // Account 5 default
+          tx = await contract.initiateTransfer(unitId, toHospital);
+          break;
+        case 'confirmReceipt':
+          tx = await contract.confirmReceipt(unitId);
+          break;
+        case 'issueBloodUnit':
+          const issueHash = ethers.id(params.patient_id || 'PAT-001'); // Convert string to bytes32
+          tx = await contract.issueBloodUnit(unitId, issueHash);
+          break;
+        case 'completeBloodUnit':
+          tx = await contract.completeBloodUnit(unitId);
+          break;
+        default:
+          throw new Error(`Unknown action: ${actionName}`);
+      }
+
+      console.log("Transaction sent! Waiting for confirmation...", tx.hash);
+      await tx.wait();
+      console.log("Transaction confirmed on-chain!");
+
+      // Sync with the off-chain backend
       const res = await fetch(`/api/units/${unitId}/action`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: actionName,
           caller_role: activeRole,
-          caller_wallet: currentAccount || '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+          caller_wallet: currentAccount,
+          blockchain_tx: tx.hash,
           ...params
         })
       });
 
       const data = await res.json();
       if (!res.ok) {
-        alert(`Action Blocked by Protocol:\n${JSON.stringify(data.detail, null, 2)}`);
-        return;
+        console.warn("Backend sync warning:", data.detail);
       }
 
       await refreshUnits();
+      alert(`Success! On-chain action ${actionName} completed.`);
     } catch (err) {
       console.error('Failed to trigger action:', err);
-      alert(err.message);
+      // Ethers JS reverts usually have err.reason or err.message
+      alert(`Blockchain Revert: ${err.reason || err.message}`);
     }
   };
 
@@ -151,6 +204,7 @@ export default function App() {
 
         {activeTab === 'register' && (
           <RegistrationView
+            currentAccount={currentAccount}
             onUnitRegistered={(newUnit) => {
               refreshUnits();
               setSelectedUnit(newUnit);

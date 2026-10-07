@@ -13,7 +13,7 @@ export const SEPOLIA_CONFIG = {
   blockExplorerUrls: ['https://sepolia.etherscan.io']
 };
 
-export const CONTRACT_ADDRESS = "0x89D22eC8D6eAf8Bca21E5343513C306cbcfB0D05"; // Example Sepolia deployment / placeholder
+export const CONTRACT_ADDRESS = "0xef04570cEf6d9ea4e7a9AfD42b32Bdc2399ED7A5"; // Deployed Sepolia contract
 
 export const ROLES = {
   ADMIN: 'DEFAULT_ADMIN_ROLE',

@@ -246,7 +246,12 @@ export default function BloodUnitPassport({
             <div>
               <h4 className="text-xs font-semibold text-white">Next Permitted State Transition</h4>
               <p className="text-[11px] text-slate-400">
-                Action requires authorized wallet role: <strong className="text-slate-200">{activeRole}</strong>
+                Action requires authorized wallet role: <strong className="text-slate-200">
+                  {currentStatus === 'COLLECTED' ? 'COLLECTION_ROLE' :
+                   currentStatus === 'TESTING' ? 'LAB_ROLE' :
+                   (currentStatus === 'APPROVED' || currentStatus === 'STORED') ? 'BLOOD_BANK_ROLE' :
+                   (currentStatus === 'TRANSFERRED' || currentStatus === 'RECEIVED' || currentStatus === 'ISSUED') ? 'HOSPITAL_ROLE' : 'N/A'}
+                </strong>
               </p>
             </div>
 

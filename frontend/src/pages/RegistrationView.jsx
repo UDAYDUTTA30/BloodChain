@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { ethers } from 'ethers';
 import { Droplet, PlusCircle, CheckCircle, QrCode, Building, Calendar, User } from 'lucide-react';
 
-export default function RegistrationView({ onUnitRegistered, bloodBanks }) {
+export default function RegistrationView({ onUnitRegistered, bloodBanks, currentAccount }) {
   const [formData, setFormData] = useState({
     blood_unit_id: `BB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
     donation_id: `DON-2026-${Math.floor(5000 + Math.random() * 5000)}`,
@@ -10,9 +11,15 @@ export default function RegistrationView({ onUnitRegistered, bloodBanks }) {
     collection_date: new Date().toISOString().split('T')[0],
     shelf_life_days: 42,
     facility_name: 'AIIMS Main Blood Bank',
-    facility_wallet: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+    facility_wallet: currentAccount || '0x... Connect Wallet',
     donor_notes: 'Eligible regular donor, hemoglobin 14.5 g/dL'
   });
+
+  React.useEffect(() => {
+    if (currentAccount) {
+      setFormData(prev => ({ ...prev, facility_wallet: currentAccount }));
+    }
+  }, [currentAccount]);
 
   const [loading, setLoading] = useState(false);
   const [successUnit, setSuccessUnit] = useState(null);
@@ -22,11 +29,10 @@ export default function RegistrationView({ onUnitRegistered, bloodBanks }) {
   const components = ['Whole Blood', 'PRBC', 'FFP', 'Platelets'];
 
   const handleFacilityChange = (e) => {
-    const selectedBank = bloodBanks?.find(b => b.name === e.target.value);
     setFormData(prev => ({
       ...prev,
       facility_name: e.target.value,
-      facility_wallet: selectedBank?.wallet_address || prev.facility_wallet
+      facility_wallet: currentAccount || prev.facility_wallet
     }));
   };
 
@@ -42,22 +48,62 @@ export default function RegistrationView({ onUnitRegistered, bloodBanks }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!window.ethereum) {
+      setErrorMsg("MetaMask is required to register a blood unit on-chain.");
+      return;
+    }
     setLoading(true);
     setErrorMsg('');
     setSuccessUnit(null);
 
     try {
+      // 1. On-Chain Transaction via MetaMask
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contractAddress = (await import('../contracts/contractConfig')).CONTRACT_ADDRESS;
+      const abi = (await import('../contracts/contractConfig')).BloodChainABI;
+      const contract = new ethers.Contract(contractAddress, abi, signer);
+
+      const collectionTimestamp = Math.floor(new Date(formData.collection_date).getTime() / 1000);
+      const expiryTimestamp = collectionTimestamp + (formData.shelf_life_days * 86400);
+      
+      // Phase 3: Cryptographic Hashing
+      // Create a deterministic template string containing the medical record payload
+      const recordTemplate = `${formData.blood_unit_id}|${formData.blood_group}|${formData.component_type}|${formData.collection_date}|${formData.facility_name || 'Blood Bank'}`;
+      // Hash it with SHA-256 for the on-chain metadataHash
+      const metadataHash = ethers.sha256(ethers.toUtf8Bytes(recordTemplate));
+
+      console.log("Sending transaction to Sepolia...");
+      const tx = await contract.registerBloodUnit(
+        formData.blood_unit_id,
+        formData.donation_id,
+        formData.blood_group,
+        formData.component_type,
+        collectionTimestamp,
+        expiryTimestamp,
+        metadataHash
+      );
+      
+      console.log("Waiting for confirmation:", tx.hash);
+      await tx.wait();
+      console.log("Registered on-chain!");
+
+      // 2. Off-Chain Sync via Backend
       const res = await fetch('/api/units/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+           ...formData,
+           blockchain_tx: tx.hash
+        })
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.detail || 'Failed to register blood unit.');
+        console.warn("Backend sync issue:", data.detail);
       }
-      setSuccessUnit(data.blood_unit);
-      onUnitRegistered(data.blood_unit);
+      
+      setSuccessUnit(data.blood_unit || formData); // Fallback to formData if sync failed
+      if (data.blood_unit) onUnitRegistered(data.blood_unit);
       
       // Auto-generate next unit ID
       setFormData(prev => ({

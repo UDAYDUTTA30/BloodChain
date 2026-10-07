@@ -5,6 +5,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 export default function ForecastDashboard() {
   const [forecast, setForecast] = useState(null);
   const [selectedGroup, setSelectedGroup] = useState('O+');
+  const [timeframe, setTimeframe] = useState(14); // new state for toggling 7 or 14 days
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,7 +27,11 @@ export default function ForecastDashboard() {
 
   const { metrics, forecast_7_days, forecast_14_days } = forecast;
   const groups = Object.keys(forecast_7_days);
-  const chartData = forecast_14_days[selectedGroup]?.daily_breakdown || [];
+  const selectedForecast = timeframe === 7 ? forecast_7_days : forecast_14_days;
+  
+  // The ML backend only outputs daily_breakdown on the 14-day object. We slice it for the 7-day view.
+  const baseChartData = forecast_14_days[selectedGroup]?.daily_breakdown || [];
+  const chartData = timeframe === 7 ? baseChartData.slice(0, 7) : baseChartData;
 
   return (
     <div className="space-y-6">
@@ -112,11 +117,27 @@ export default function ForecastDashboard() {
       {/* Daily Forecast Projection Curve */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-white">
-            14-Day Predicted Daily Requirement: <span className="text-red-400 font-black">{selectedGroup}</span>
-          </h3>
+          <div className="flex items-center space-x-4">
+            <h3 className="text-sm font-bold text-white">
+              {timeframe}-Day Predicted Daily Requirement: <span className="text-red-400 font-black">{selectedGroup}</span>
+            </h3>
+            <div className="flex bg-slate-800 rounded-lg p-0.5">
+              <button
+                onClick={() => setTimeframe(7)}
+                className={`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${timeframe === 7 ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+              >
+                7 Days
+              </button>
+              <button
+                onClick={() => setTimeframe(14)}
+                className={`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${timeframe === 14 ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+              >
+                14 Days
+              </button>
+            </div>
+          </div>
           <span className="text-xs text-slate-400">
-            Avg: <strong className="text-white">{forecast_14_days[selectedGroup]?.daily_average} units/day</strong>
+            Avg: <strong className="text-white">{selectedForecast[selectedGroup]?.daily_average} units/day</strong>
           </span>
         </div>
 
