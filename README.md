@@ -1,6 +1,5 @@
 # BloodChain 🩸
 **Blockchain-Based Blood Supply Chain Traceability & Intelligent Inventory Management System**
-*Academic Project – Blockchain / Computer Engineering (Version 3.0 Final Specification)*
 
 ---
 
