@@ -5,6 +5,11 @@ export default function AnomalyAuditView({ onTriggerAction }) {
   const [auditLogs, setAuditLogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [simulateResult, setSimulateResult] = useState(null);
+  const [customAttack, setCustomAttack] = useState({
+    unitId: 'BB-2026-9282',
+    action: 'issueBloodUnit',
+    role: 'HACKER_ROLE'
+  });
 
   const fetchAuditLogs = async () => {
     try {
@@ -19,6 +24,35 @@ export default function AnomalyAuditView({ onTriggerAction }) {
   useEffect(() => {
     fetchAuditLogs();
   }, []);
+
+  const handleCustomAttack = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setSimulateResult(null);
+    try {
+      const res = await fetch(`/api/units/${customAttack.unitId}/action`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: customAttack.action,
+          caller_role: customAttack.role,
+          caller_wallet: '0xMaliciousHackerWallet999',
+          remarks: 'Custom attack simulation'
+        })
+      });
+      const data = await res.json();
+      setSimulateResult({
+        scenarioId: 'CUSTOM-ATTACK',
+        blocked: !res.ok,
+        detail: res.ok ? data : (data.detail || data)
+      });
+      fetchAuditLogs();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const anomalyScenarios = [
     {
@@ -134,6 +168,54 @@ export default function AnomalyAuditView({ onTriggerAction }) {
               </button>
             </div>
           ))}
+        </div>
+
+        {/* Custom Attack Builder */}
+        <div className="mt-6 pt-4 border-t border-slate-800">
+          <h4 className="text-xs font-bold text-white mb-3">Custom Attack Vector Builder</h4>
+          <form onSubmit={handleCustomAttack} className="flex flex-col sm:flex-row gap-3">
+            <input 
+              type="text" 
+              value={customAttack.unitId}
+              onChange={(e) => setCustomAttack({...customAttack, unitId: e.target.value})}
+              className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white flex-1"
+              placeholder="Target Unit ID"
+            />
+            <select 
+              value={customAttack.action}
+              onChange={(e) => setCustomAttack({...customAttack, action: e.target.value})}
+              className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-rose-400 flex-1"
+            >
+              <option value="submitForTesting">submitForTesting</option>
+              <option value="approveBloodUnit">approveBloodUnit</option>
+              <option value="rejectBloodUnit">rejectBloodUnit</option>
+              <option value="storeBloodUnit">storeBloodUnit</option>
+              <option value="initiateTransfer">initiateTransfer</option>
+              <option value="confirmReceipt">confirmReceipt</option>
+              <option value="issueBloodUnit">issueBloodUnit</option>
+              <option value="completeBloodUnit">completeBloodUnit</option>
+              <option value="markExpired">markExpired</option>
+              <option value="deleteDatabase">deleteDatabase (Invalid)</option>
+            </select>
+            <select 
+              value={customAttack.role}
+              onChange={(e) => setCustomAttack({...customAttack, role: e.target.value})}
+              className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-amber-400 flex-1"
+            >
+              <option value="COLLECTION_ROLE">COLLECTION_ROLE</option>
+              <option value="LAB_ROLE">LAB_ROLE</option>
+              <option value="BLOOD_BANK_ROLE">BLOOD_BANK_ROLE</option>
+              <option value="HOSPITAL_ROLE">HOSPITAL_ROLE</option>
+              <option value="HACKER_ROLE">HACKER_ROLE</option>
+            </select>
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all"
+            >
+              Fire Payload
+            </button>
+          </form>
         </div>
 
         {simulateResult && (

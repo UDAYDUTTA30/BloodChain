@@ -8,15 +8,12 @@ export default function QRModal({ unit, isOpen, onClose, onSearchUnit }) {
 
   if (!isOpen || !unit) return null;
 
-  const qrData = JSON.stringify({
-    system: "BloodChain",
-    unit_id: unit.blood_unit_id,
-    blood_group: unit.blood_group,
-    component: unit.component_type,
-    expiry: unit.expiry_date_str,
-    metadata_hash: unit.metadata_hash,
-    network: "Ethereum Sepolia"
-  });
+  const qrData = `🩸 BloodChain Passport
+ID: ${unit.blood_unit_id}
+Type: ${unit.blood_group} (${unit.component_type})
+Expiry: ${unit.expiry_date_str}
+Net: Ethereum Sepolia
+Hash: ${unit.metadata_hash}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(qrData);
@@ -53,11 +50,11 @@ export default function QRModal({ unit, isOpen, onClose, onSearchUnit }) {
         </div>
 
         {/* QR Code Canvas */}
-        <div className="bg-white p-4 rounded-xl flex items-center justify-center mx-auto w-52 h-52 shadow-inner mb-5">
+        <div className="bg-white p-4 rounded-xl flex items-center justify-center mx-auto w-64 h-64 shadow-inner mb-5">
           <QRCodeSVG
             value={qrData}
-            size={180}
-            level="H"
+            size={220}
+            level="M"
             includeMargin={true}
           />
         </div>

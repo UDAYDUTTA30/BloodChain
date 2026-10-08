@@ -31,7 +31,10 @@ export default function DocumentVerifier({ currentUnit }) {
 
   const loadOriginalTemplate = () => {
     if (!currentUnit) return;
-    const template = `${currentUnit.blood_unit_id}|${currentUnit.blood_group}|${currentUnit.component_type}|${currentUnit.collection_date_str}|${currentUnit.current_facility || 'Blood Bank'}`;
+    // The original metadata hash was created using the registration facility. 
+    // If the unit moved, current_facility might be the hospital, so we grab the first holder.
+    const originalFacility = currentUnit.custody_timeline?.[0]?.holder || currentUnit.current_facility || 'Blood Bank';
+    const template = `${currentUnit.blood_unit_id}|${currentUnit.blood_group}|${currentUnit.component_type}|${currentUnit.collection_date_str}|${originalFacility}`;
     setDocText(template);
   };
 

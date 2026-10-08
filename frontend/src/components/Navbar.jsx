@@ -43,7 +43,6 @@ export default function Navbar({
             <div>
               <div className="flex items-center space-x-2">
                 <span className="text-xl font-bold tracking-tight text-white">Blood<span className="text-red-500">Chain</span></span>
-                <span className="text-[10px] uppercase font-semibold px-1.5 py-0.5 rounded bg-red-950 text-red-400 border border-red-800/60">PRD v3.0</span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block">Blockchain Blood Supply Chain & Digital Passport</p>
             </div>
