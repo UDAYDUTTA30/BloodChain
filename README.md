@@ -1,5 +1,8 @@
-# BloodChain
-**Blockchain-Based Blood Supply Chain Traceability & Intelligent Inventory Management System**
+<div align="center">
+  <h1>🩸 BloodChain</h1>
+  <strong>Blockchain-Based Blood Supply Chain Traceability & Intelligent Inventory Management System</strong>
+  <br/><br/>
+</div>
 
 ---
 
@@ -13,27 +16,11 @@ Blood supply chains worldwide suffer from data fragmentation, counterfeit risks,
 
 ---
 
-## Architecture & Stack
+## 🏗️ System Architecture (Post-Integration)
 
-```text
-                              React.js + Vite (Tailwind CSS, Lucide, Recharts)
-                                                      │
-                            ┌─────────────────────────┴─────────────────────────┐
-                            ▼                                                   ▼
-                 Ethereum Sepolia Testnet                            FastAPI REST API
-           (Solidity ^0.8.20 + OpenZeppelin)                 (SQLite/PostgreSQL + Python)
-           - BloodUnit State Machine & RBAC                  - Real-time UI Database Sync
-           - Cryptographic Metadata Hashes                   - Off-Chain Patient Privacy Records
-           - Immutable Event Audit Trail                     - SHA-256 Document Verification
-                            ▲                                                   ▲
-                            │                                                   │
-                            └─────────────────────────┬─────────────────────────┘
-                                                      ▼
-                                           Machine Learning Module
-                                        (Pandas + Scikit-Learn RF)
-                                     - 7-Day & 14-Day Demand Forecast
-                                     - Lifecycle Anomaly Detector
-```
+![BloodChain System Architecture](docs/architecture.jpg)
+
+The architecture connects **React (Vite)** on the frontend with a **FastAPI** backend that acts as the primary data orchestrator. The backend validates rules, runs the **Random Forest** machine learning models for anomaly detection and demand forecasting, and interfaces directly with the **Ethereum Sepolia Testnet** (via Web3.py) to securely lock medical document hashes and track provenance across the network.
 
 ---
 
