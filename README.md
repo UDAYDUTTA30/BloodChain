@@ -59,9 +59,11 @@ BloodChain utilizes a **Random Forest Regressor** to predict future blood requir
 
 ### Formulas & Evaluation Metrics
 * **Random Forest Regressor:** An ensemble learning method that constructs multiple decision trees during training and outputs the mean prediction, preventing overfitting on highly volatile blood demand data.
-* **R-Squared Score (Coefficient of Determination):** Measures how well the variance in daily blood demand is predicted by the model (e.g., R² = 0.7539).
-* **Mean Absolute Error (MAE):** The average absolute difference between predicted and actual units needed. Formula: `(1/n) * SUM(|y - ŷ|)`
-* **Root Mean Squared Error (RMSE):** The square root of the average of squared differences. Heavily penalizes large, dangerous forecasting errors (e.g., predicting 10 units when 100 are needed). Formula: `SQRT( (1/n) * SUM((y - ŷ)^2) )`
+* **R-Squared Score (Coefficient of Determination):** Measures how well the variance in daily blood demand is predicted by the model (e.g., $R^2 = 0.7539$).
+* **Mean Absolute Error (MAE):** The average absolute difference between predicted and actual units needed. 
+  $$\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|$$
+* **Root Mean Squared Error (RMSE):** The square root of the average of squared differences. Heavily penalizes large, dangerous forecasting errors (e.g., predicting 10 units when 100 are needed).
+  $$\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$$
 * **Daily Average Requirement:** Calculated by smoothing the output arrays to give hospital administrators an actionable baseline metric.
 
 ---
