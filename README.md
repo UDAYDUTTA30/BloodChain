@@ -10,7 +10,7 @@
 Blood supply chains worldwide suffer from data fragmentation, counterfeit risks, poor shelf-life tracking, and unexpected critical supply shortages. **BloodChain** solves this by attaching an immutable digital identity—the **Blood Unit Passport**—to every physical blood bag. 
 
 * **End-to-End Traceability:** Prevents counterfeit blood by cryptographically logging every lifecycle step (Collection ➡️ Lab ➡️ Blood Bank ➡️ Hospital ➡️ Transfusion) on the Ethereum blockchain.
-* **Safety & Compliance:** Strict Smart Contract Role-Based Access Control (RBAC) ensures only authorized laboratories can approve blood, and guarantees that hospitals cannot transfuse expired or contaminated bags.
+* **Safety & Compliance: ** Strict Smart Contract Role-Based Access Control (RBAC) ensures only authorized laboratories can approve blood, and guarantees that hospitals cannot transfuse expired or contaminated bags.
 * **Cryptographic Data Integrity:** Sensitive medical reports are secured off-chain, while their immutable **SHA-256 hashes** are locked on-chain. This provides zero-knowledge tamper detection without exposing private patient data on the public ledger.
 * **Predictive AI:** Uses machine learning to forecast future blood demand so national blood banks can proactively prepare for shortages before they happen.
 
