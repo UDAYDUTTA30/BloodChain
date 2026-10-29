@@ -2,7 +2,22 @@
   <h1>🩸 BloodChain</h1>
   <strong>Blockchain-Based Blood Supply Chain Traceability & Intelligent Inventory Management System</strong>
   <br/><br/>
+
+  [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://blood-chain-flame.vercel.app)
+  [![Backend API](https://img.shields.io/badge/Backend%20API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://bloodchain-c8f3.onrender.com)
+  [![API Docs](https://img.shields.io/badge/Swagger%20Docs-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://bloodchain-c8f3.onrender.com/docs)
+  [![Network](https://img.shields.io/badge/Network-Ethereum%20Sepolia-627EEA?style=for-the-badge&logo=ethereum&logoColor=white)](https://sepolia.etherscan.io)
+  <br/><br/>
 </div>
+
+---
+
+## 🌐 Live Deployments
+
+* **Frontend Web Application (Vercel):** [https://blood-chain-flame.vercel.app](https://blood-chain-flame.vercel.app)
+* **REST API Service (Render):** [https://bloodchain-c8f3.onrender.com](https://bloodchain-c8f3.onrender.com)
+* **Interactive Swagger Documentation:** [https://bloodchain-c8f3.onrender.com/docs](https://bloodchain-c8f3.onrender.com/docs)
+* **Blockchain Network:** Ethereum Sepolia Testnet
 
 ---
 
