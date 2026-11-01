@@ -166,7 +166,8 @@ export default function InventoryView({
                           <button
                             onClick={() => onTriggerAction(unit.blood_unit_id, 'initiateTransfer', {
                               destination_facility: transferTargetHosp,
-                              destination_wallet: '0x71bE63f3384f5fb98995898A86B02Fb2426c5788',
+                              destination_wallet: '0x2808d69BBcaAd5Dc56161632a8F78d22A73f7dfb',
+                              to_hospital: '0x2808d69BBcaAd5Dc56161632a8F78d22A73f7dfb',
                               remarks: `Dispatched to ${transferTargetHosp}`
                             })}
                             className="px-2.5 py-1 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-[11px] font-semibold inline-flex items-center space-x-1"

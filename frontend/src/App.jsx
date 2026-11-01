@@ -109,8 +109,8 @@ export default function App() {
           tx = await contract.storeBloodUnit(unitId);
           break;
         case 'initiateTransfer':
-          // Needs hospital address! We will use a mock or prompt if not provided.
-          const toHospital = params.to_hospital || '0x2808d69BBcaAd5Dc56161632a8F78d22A73f7dfb'; // Account 5 default
+          // Support destination_wallet, to_hospital, or fallback to Account 5 (Hospital)
+          const toHospital = params.destination_wallet || params.to_hospital || '0x2808d69BBcaAd5Dc56161632a8F78d22A73f7dfb';
           tx = await contract.initiateTransfer(unitId, toHospital);
           break;
         case 'confirmReceipt':
